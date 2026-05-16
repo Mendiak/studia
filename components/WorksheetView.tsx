@@ -58,9 +58,9 @@ function renderFillBlank(sentence?: string) {
           nodes.push(
             <span
               key={`blank-${index}`}
-              className='font-bold text-primary underline decoration-primary/50 underline-offset-4'
+              className='inline-block min-w-[80px] border-b-2 border-primary/40 mx-1 text-center print:min-w-[120px] print:border-slate-900'
             >
-              _______
+              &nbsp;
             </span>
           )
         }
@@ -128,12 +128,26 @@ export default function WorksheetView({
   }
 
   return (
-    <div className='relative bg-white border border-border p-10 shadow-[0_32px_120px_-40px_rgba(15,23,42,0.1)] rounded-[2rem] transition-all duration-500 hover:shadow-2xl print-page overflow-hidden print:shadow-none print:border-none print:p-0 print:rounded-none'>
+    <div className='relative bg-white border border-border p-10 shadow-[0_32px_120px_-40px_rgba(15,23,42,0.1)] rounded-[2rem] transition-all duration-500 hover:shadow-2xl print-page overflow-hidden print:shadow-none print:border-none print:p-0 print:rounded-none print:m-0'>
       {/* Notebook margin effect */}
       <div className='absolute left-0 top-0 bottom-0 w-8 bg-slate-50 border-r border-dashed border-slate-200 no-print' />
       <div className='absolute left-3 top-0 bottom-0 w-px bg-red-200 no-print' />
 
       <div className='relative z-10'>
+        {/* Encabezado para impresión (Nombre, Fecha, etc.) */}
+        <div className='hidden print:block mb-8 border-b-2 border-slate-900 pb-6'>
+          <div className='flex justify-between items-end gap-8'>
+            <div className='flex-1 border-b border-slate-400 pb-1'>
+              <span className='text-[10px] font-black uppercase tracking-widest text-slate-500 block mb-1'>Nombre y apellidos</span>
+              <div className='h-6' />
+            </div>
+            <div className='w-40 border-b border-slate-400 pb-1'>
+              <span className='text-[10px] font-black uppercase tracking-widest text-slate-500 block mb-1'>Fecha</span>
+              <div className='h-6' />
+            </div>
+          </div>
+        </div>
+
         {isLoading && (
           <div className='absolute inset-0 z-10 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-4xl'>
             <div className='flex flex-col items-center gap-3'>
@@ -199,13 +213,13 @@ export default function WorksheetView({
         <div className='mb-16'>
           <div className='flex items-center gap-3 mb-8 pb-4 border-b-2 border-slate-100'>
             <BookOpen className='w-6 h-6 text-primary' />
-            <h2 className='text-2xl font-black text-slate-900 font-heading'>Ejercicios de repaso</h2>
+            <h2 className='text-2xl font-black text-slate-900 font-heading print:text-xl'>Ejercicios de repaso</h2>
           </div>
 
-          <div className='space-y-8'>
+          <div className='space-y-8 print:space-y-4'>
             {worksheet.exercises.map(
               (exercise: Exercise, index: number) => (
-                <div key={index} className='group relative border-2 border-slate-100 rounded-[2rem] p-8 bg-white transition-all duration-300 hover:border-primary/20 hover:shadow-lg'>
+                <div key={index} className='group relative border-2 border-slate-100 rounded-[2rem] p-8 bg-white transition-all duration-300 hover:border-primary/20 hover:shadow-lg print:border-slate-200 print:rounded-2xl print:p-4 print-break-avoid'>
                   <div className='mb-6 flex items-start justify-between gap-4'>
                     <div className='flex items-center gap-4'>
                       <span className='bg-primary text-white rounded-xl w-10 h-10 flex items-center justify-center text-lg font-black shadow-[0_4px_0_0_rgba(37,99,235,0.2)]'>
@@ -234,7 +248,7 @@ export default function WorksheetView({
                       <div className='space-y-6'>
                         <div>
                           <p className='text-slate-900 font-bold mb-3 text-lg'>📖 Lee con atención:</p>
-                          <div className='rounded-2xl border-2 border-primary/10 bg-primary/5 p-6 text-xl text-slate-800 leading-relaxed italic'>
+                          <div className='rounded-2xl border-2 border-primary/10 bg-primary/5 p-6 text-xl text-slate-800 leading-relaxed italic print:bg-slate-50 print:border-slate-200 print:text-lg'>
                             {exercise.text}
                           </div>
                         </div>
@@ -278,9 +292,9 @@ export default function WorksheetView({
                       </div>
                     )}
 
-                    <div className='mt-8 pt-6 border-t-2 border-dashed border-slate-100'>
-                      <p className='text-slate-400 text-sm font-bold uppercase tracking-widest mb-4'>Tu respuesta aquí:</p>
-                      <div className='h-24 w-full rounded-2xl bg-slate-50/50 border-2 border-slate-100' />
+                    <div className='mt-8 pt-6 border-t-2 border-dashed border-slate-100 print:mt-4 print:pt-4 print:border-slate-200'>
+                      <p className='text-slate-400 text-sm font-bold uppercase tracking-widest mb-4 print:text-slate-500 print:mb-2'>Tu respuesta aquí:</p>
+                      <div className='h-24 w-full rounded-2xl bg-slate-50/50 border-2 border-slate-100 print:h-12 print:bg-transparent print:border-slate-200 print:border-dashed print:rounded-none print:border-0 print:border-b-2' />
                     </div>
                   </div>
                 </div>
@@ -290,43 +304,46 @@ export default function WorksheetView({
         </div>
 
         {/* Sección de Soluciones */}
-        <div className='border-t-4 border-slate-100 pt-16 mt-8'>
-          <div className='flex items-center gap-3 mb-10'>
-            <div className='bg-green-100 p-2 rounded-xl'>
-              <CheckCircle className='w-8 h-8 text-green-600' />
+        <div className='border-t-4 border-slate-100 pt-16 mt-8 print:break-before-page print:border-slate-200 print:pt-4 print:mt-4'>
+          <div className='flex items-center gap-3 mb-10 print:mb-4'>
+            <div className='bg-green-100 p-2 rounded-xl print:bg-slate-100 print:p-1'>
+              <CheckCircle className='w-8 h-8 text-green-600 print:w-6 print:h-6 print:text-slate-900' />
             </div>
-            <h2 className='text-3xl font-black text-slate-900 font-heading'>¡Comprobamos resultados!</h2>
+            <h2 className='text-3xl font-black text-slate-900 font-heading print:text-xl'>¡Comprobamos resultados!</h2>
           </div>
+          <p className='hidden print:block text-slate-500 text-xs mb-4 font-medium italic'>
+            Esta sección es para que el adulto pueda corregir los ejercicios fácilmente.
+          </p>
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-8 print:gap-4'>
             {worksheet.exercises.map(
               (exercise: Exercise, index: number) => (
-                <div key={`solution-${index}`} className='group border-2 border-green-100 rounded-[2rem] p-8 bg-green-50/20 transition-all duration-300 hover:bg-green-50/40'>
-                  <div className='flex items-center gap-4 mb-6'>
-                    <span className='bg-green-600 text-white rounded-xl w-8 h-8 flex items-center justify-center text-sm font-black shadow-[0_4px_0_0_rgba(22,163,74,0.2)]'>
+                <div key={`solution-${index}`} className='group border-2 border-green-100 rounded-[2rem] p-8 bg-green-50/20 transition-all duration-300 hover:bg-green-50/40 print:p-4 print:rounded-xl print:border-slate-100 print-break-avoid'>
+                  <div className='flex items-center gap-4 mb-6 print:mb-2'>
+                    <span className='bg-green-600 text-white rounded-xl w-8 h-8 flex items-center justify-center text-sm font-black shadow-[0_4px_0_0_rgba(22,163,74,0.2)] print:w-6 print:h-6 print:text-xs print:shadow-none'>
                       {index + 1}
                     </span>
-                    <h3 className='font-black text-lg text-slate-900'>
+                    <h3 className='font-black text-lg text-slate-900 print:text-sm'>
                       Solución del reto {index + 1}
                     </h3>
                   </div>
 
-                  <div className='space-y-6'>
-                    <div className='bg-white p-5 rounded-2xl border-2 border-green-100 shadow-sm'>
-                      <div className='flex items-center gap-2 mb-2'>
+                  <div className='space-y-6 print:space-y-2'>
+                    <div className='bg-white p-5 rounded-2xl border-2 border-green-100 shadow-sm print:p-3 print:rounded-lg print:border-slate-50'>
+                      <div className='flex items-center gap-2 mb-2 print:mb-1'>
                         <CheckCircle className='w-4 h-4 text-green-600' />
                         <p className='text-[10px] font-black text-green-700 uppercase tracking-widest'>Respuesta correcta</p>
                       </div>
-                      <p className='text-slate-900 font-black text-xl'>{exercise.answer}</p>
+                      <p className='text-slate-900 font-black text-xl print:text-base'>{exercise.answer}</p>
                     </div>
 
-                    <div className='flex items-start gap-4 px-2'>
-                      <div className='bg-amber-100 p-2 rounded-lg mt-1'>
-                        <Lightbulb className='w-4 h-4 text-amber-700' />
+                    <div className='flex items-start gap-4 px-2 print:gap-2'>
+                      <div className='bg-amber-100 p-2 rounded-lg mt-1 print:p-1'>
+                        <Lightbulb className='w-4 h-4 text-amber-700 print:w-3 print:h-3' />
                       </div>
                       <div>
                         <p className='text-[10px] font-black text-amber-700 uppercase tracking-widest mb-1'>¿Por qué es así?</p>
-                        <p className='text-slate-700 leading-relaxed font-bold text-base'>{exercise.explanation}</p>
+                        <p className='text-slate-700 leading-relaxed font-bold text-base print:text-xs'>{exercise.explanation}</p>
                       </div>
                     </div>
                   </div>
@@ -334,6 +351,10 @@ export default function WorksheetView({
               )
             )}
           </div>
+        </div>
+        <div className='hidden print:flex justify-between items-center mt-12 pt-4 border-t border-slate-200 text-[10px] font-black uppercase tracking-widest text-slate-400'>
+          <span>Generado por StudIA - Tu profesor particular con IA</span>
+          <span>¡Sigue aprendiendo, tú puedes! 🚀</span>
         </div>
       </div>
 
