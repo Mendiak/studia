@@ -1,6 +1,6 @@
 'use client'
 
-import { FileText, CheckCircle, Lightbulb, BookOpen, GraduationCap, Target, BarChart, Globe, MapPin } from 'lucide-react'
+import { FileText, CheckCircle, Lightbulb, BookOpen, GraduationCap, Target, BarChart, Globe, MapPin, Printer, PlusCircle, RefreshCw } from 'lucide-react'
 import { Worksheet, Exercise } from '@/lib/schemas'
 
 interface Props {
@@ -141,9 +141,9 @@ export default function WorksheetView({
             </div>
           </div>
         )}
-        <div className='mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between'>
-          <div className='max-w-2xl'>
-            <h1 className='text-4xl font-black text-slate-900 mb-4 font-heading tracking-tight'>
+        <div className='mb-10'>
+          <div className='max-w-4xl'>
+            <h1 className='text-4xl md:text-5xl font-black text-slate-900 mb-6 font-heading tracking-tight leading-tight'>
               {worksheet.title}
             </h1>
 
@@ -191,23 +191,6 @@ export default function WorksheetView({
             <p className='text-slate-600 text-lg leading-relaxed font-medium whitespace-pre-wrap border-l-4 border-slate-100 pl-4 py-1'>
               {worksheet.instructions}
             </p>
-          </div>
-
-          <div className='flex flex-wrap items-center gap-3 no-print shrink-0'>
-            <button
-              type='button'
-              onClick={onReset}
-              className='inline-flex items-center justify-center rounded-xl border-2 border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:border-slate-300 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200'
-            >
-              Generar otra ficha
-            </button>
-            <button
-              type='button'
-              onClick={() => window.print()}
-              className='inline-flex items-center justify-center rounded-xl bg-slate-900 px-6 py-2.5 text-sm font-bold text-white transition hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-900'
-            >
-              Imprimir ahora
-            </button>
           </div>
         </div>
 
@@ -336,6 +319,27 @@ export default function WorksheetView({
             )}
           </div>
         </div>
+      </div>
+
+      {/* Action Bar Flotante */}
+      <div className='fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 bg-white/90 backdrop-blur-lg border border-slate-200 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] no-print animate-in fade-in slide-in-from-bottom-8 duration-700'>
+        <button
+          onClick={onReset}
+          className='flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors rounded-xl hover:bg-slate-100'
+        >
+          <PlusCircle className='w-5 h-5 text-slate-500' />
+          Nueva ficha
+        </button>
+
+        <div className='w-px h-8 bg-slate-200 mx-1' />
+
+        <button
+          onClick={() => window.print()}
+          className='flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95'
+        >
+          <Printer className='w-5 h-5' />
+          Imprimir ficha
+        </button>
       </div>
     </div>
   )
