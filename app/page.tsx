@@ -25,7 +25,7 @@ export default function HomePage() {
           </div>
 
           <h1 className='text-6xl md:text-7xl font-bold mb-4 font-heading tracking-tight text-gradient py-2'>
-            Aula Amiga
+            StudIA
           </h1>
 
           <p className='mx-auto max-w-2xl text-muted-foreground text-xl font-accent leading-relaxed'>

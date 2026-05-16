@@ -20,7 +20,7 @@ const rubik = Rubik({
 });
 
 export const metadata: Metadata = {
-  title: "Repaso Cole - Generador de Fichas Educativas",
+  title: "StudIA - Generador de Fichas Educativas",
   description: "Genera fichas educativas personalizadas para estudiantes de primaria",
 };
 
