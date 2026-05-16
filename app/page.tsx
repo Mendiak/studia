@@ -18,7 +18,7 @@ export default function HomePage() {
   return (
     <main className='min-h-screen p-4 md:p-8 bg-transparent'>
       <div className='max-w-7xl mx-auto'>
-        <div className='text-center mb-8 space-y-4'>
+        <div className='text-center mb-8 space-y-4 no-print'>
           <div className='inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-4 py-2 text-sm font-medium font-accent shadow-sm ring-1 ring-primary/15'>
             <span className='inline-flex h-2.5 w-2.5 rounded-full bg-primary animate-pulse' />
             1.º a 6.º de Primaria · Global

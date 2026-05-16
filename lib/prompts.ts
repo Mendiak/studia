@@ -71,5 +71,6 @@ REGLAS CRÍTICAS:
 - Los ejercicios deben ser estrictamente apropiados para la edad de ${grade}.
 - Asegúrate de que el JSON sea válido.
 - El idioma de todo el contenido debe ser ${language}.
+- REGLA DE CAPITALIZACIÓN: Los títulos y enunciados deben seguir las normas ortográficas del idioma. En español y catalán, los títulos NO llevan mayúscula inicial en cada palabra (estilo inglés); solo la primera palabra y los nombres propios deben ir en mayúscula.
 `
 }

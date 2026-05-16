@@ -127,7 +127,7 @@ export default function WorksheetView({
   }
 
   return (
-    <div className='relative bg-white border border-border p-10 shadow-[0_32px_120px_-40px_rgba(15,23,42,0.1)] rounded-[2rem] transition-all duration-500 hover:shadow-2xl print-page overflow-hidden'>
+    <div className='relative bg-white border border-border p-10 shadow-[0_32px_120px_-40px_rgba(15,23,42,0.1)] rounded-[2rem] transition-all duration-500 hover:shadow-2xl print-page overflow-hidden print:shadow-none print:border-none print:p-0 print:rounded-none'>
       {/* Notebook margin effect */}
       <div className='absolute left-0 top-0 bottom-0 w-8 bg-slate-50 border-r border-dashed border-slate-200 no-print' />
       <div className='absolute left-3 top-0 bottom-0 w-px bg-red-200 no-print' />
