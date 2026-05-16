@@ -16,7 +16,7 @@ export default function HomePage() {
   const showResult = isLoading || worksheet
 
   return (
-    <main className='min-h-screen p-4 md:p-8 bg-muted/30'>
+    <main className='min-h-screen p-4 md:p-8 bg-transparent'>
       <div className='max-w-7xl mx-auto'>
         <div className='text-center mb-8 space-y-4'>
           <div className='inline-flex items-center gap-2 rounded-full bg-primary/10 text-primary px-4 py-2 text-sm font-medium font-accent shadow-sm ring-1 ring-primary/15'>
