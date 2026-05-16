@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Fredoka, Rubik } from "next/font/google";
 import "./globals.css";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,7 +35,12 @@ export default function RootLayout({
       lang="es"
       className={`${inter.variable} ${fredoka.variable} ${rubik.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-sans">{children}</body>
+      <body className="min-h-full flex flex-col font-sans">
+        <div className="flex-1">
+          {children}
+        </div>
+        <Footer />
+      </body>
     </html>
   );
 }
