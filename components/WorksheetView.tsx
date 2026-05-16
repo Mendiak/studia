@@ -12,7 +12,8 @@ interface Props {
 const exerciseTypeLabels: Record<Exercise['type'], string> = {
   multiple_choice: 'Opción múltiple',
   short_answer: 'Respuesta corta',
-  fill_blank: 'Completar hueco'
+  fill_blank: 'Completar hueco',
+  reading_comprehension: 'Lectura comprensiva'
 }
 
 const difficultyLabels: Record<string, string> = {
@@ -228,6 +229,21 @@ export default function WorksheetView({
                         <div className='rounded-2xl border-2 border-slate-100 bg-slate-50/50 p-6 text-xl text-slate-800 leading-loose'>
                           {renderFillBlank(exercise.sentence)}
                         </div>
+                      </div>
+                    ) : exercise.type === 'reading_comprehension' ? (
+                      <div className='space-y-6'>
+                        <div>
+                          <p className='text-slate-900 font-bold mb-3 text-lg'>📖 Lee con atención:</p>
+                          <div className='rounded-2xl border-2 border-primary/10 bg-primary/5 p-6 text-xl text-slate-800 leading-relaxed italic'>
+                            {exercise.text}
+                          </div>
+                        </div>
+                        {exercise.question && (
+                          <div>
+                            <p className='text-slate-900 font-bold mb-3 text-lg'>❓ Ahora responde:</p>
+                            <p className='text-slate-800 text-xl font-medium leading-relaxed'>{exercise.question}</p>
+                          </div>
+                        )}
                       </div>
                     ) : exercise.question ? (
                       <div>

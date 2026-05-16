@@ -46,6 +46,7 @@ INSTRUCCIONES DIDÁCTICAS:
 2. PROGRESIÓN COGNITIVA: Genera exactamente ${count} ejercicios. No todos deben ser de memoria. Incluye una mezcla de:
    - Identificación/Recuerdo (conceptos básicos).
    - Comprensión (explicar con sus palabras).
+   - Lectura comprensiva (un párrafo corto seguido de una pregunta crítica sobre el mismo).
    - Aplicación (resolver una situación real o cotidiana).
 3. CONTEXTUALIZACIÓN: Siempre que sea posible, sitúa los ejercicios ${contextInstruction}.
 4. FEEDBACK FORMATIVO: El campo "explanation" es CRUCIAL. No repitas la respuesta. Debe ser una mini-explicación didáctica: el "porqué" de la respuesta, una regla mnemotécnica o un consejo para no fallar la próxima vez.
@@ -57,9 +58,10 @@ ESTRUCTURA DEL JSON (Devuelve exclusivamente este objeto):
   "instructions": "Un mensaje breve y motivador para el estudiante. Al final, añade una sección separada llamada '💡 Consejo para el adulto:' con un tip pedagógico para supervisar la actividad.",
   "exercises": [
     {
-      "type": "multiple_choice" | "short_answer" | "fill_blank",
-      "question": "La pregunta o enunciado del reto. Sé creativo.",
+      "type": "multiple_choice" | "short_answer" | "fill_blank" | "reading_comprehension",
+      "question": "La pregunta o enunciado del reto. Para 'reading_comprehension', haz una pregunta sobre el texto.",
       "sentence": "Para 'fill_blank', usa [BLANK] para el hueco. Para otros tipos, úsalo como contexto adicional si es necesario.",
+      "text": "Un pequeño párrafo (3-5 líneas) solo para 'reading_comprehension'. Debe ser una lectura comprensiva adecuada a la edad.",
       "options": ["Opción A", "Opción B", "Opción C", "Opción D"], (Solo para multiple_choice),
       "answer": "La respuesta correcta (clara y concisa)",
       "explanation": "Explicación didáctica y feedback formativo para aprender del error o reforzar el acierto."

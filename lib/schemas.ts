@@ -4,12 +4,15 @@ export const ExerciseSchema = z.object({
   type: z.enum([
     'multiple_choice',
     'short_answer',
-    'fill_blank'
+    'fill_blank',
+    'reading_comprehension'
   ]),
 
   question: z.string().optional(),
 
   sentence: z.string().optional(),
+
+  text: z.string().optional(),
 
   options: z.array(z.string()).optional(),
 
