@@ -14,6 +14,32 @@ export default function WorksheetForm({
   onLoading
 }: Props) {
   const [isLoading, setIsLoading] = useState(false)
+  const [subject, setSubject] = useState('matemáticas')
+  const [language, setLanguage] = useState('es')
+  const [userLanguage, setUserLanguage] = useState('es')
+
+  const isLanguageLocked = ['inglés', 'castellano', 'catalán'].includes(subject)
+
+  const handleSubjectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextSubject = e.target.value
+    setSubject(nextSubject)
+
+    if (nextSubject === 'inglés') {
+      setLanguage('en')
+    } else if (nextSubject === 'castellano') {
+      setLanguage('es')
+    } else if (nextSubject === 'catalán') {
+      setLanguage('ca')
+    } else {
+      setLanguage(userLanguage)
+    }
+  }
+
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const nextLanguage = e.target.value
+    setLanguage(nextLanguage)
+    setUserLanguage(nextLanguage)
+  }
 
   async function handleSubmit(
     e: React.FormEvent<HTMLFormElement>
@@ -29,7 +55,7 @@ export default function WorksheetForm({
         subject: formData.get('subject'),
         topic: formData.get('topic'),
         difficulty: formData.get('difficulty'),
-        language: formData.get('language'),
+        language: language,
         grade: formData.get('grade'),
         region: formData.get('region'),
         gender: formData.get('gender'),
@@ -106,14 +132,22 @@ export default function WorksheetForm({
           </label>
           <select
             name='subject'
+            value={subject}
+            onChange={handleSubjectChange}
             className='w-full px-3 py-2 border border-border rounded-xl bg-background text-foreground font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-colors'
             required
           >
             <option value='matemáticas'>Matemáticas</option>
-            <option value='catalán'>Catalán</option>
-            <option value='castellano'>Castellano</option>
-            <option value='ciencias'>Ciencias</option>
+            <option value='castellano'>Castellano (Lengua)</option>
+            <option value='catalán'>Catalán (Llengua)</option>
+            <option value='inglés'>Inglés (English)</option>
+            <option value='ciencias naturales'>Ciencias Naturales</option>
+            <option value='ciencias sociales'>Ciencias Sociales</option>
+            <option value='geografía'>Geografía</option>
             <option value='historia'>Historia</option>
+            <option value='música'>Música</option>
+            <option value='arte'>Plástica / Arte</option>
+            <option value='educación emocional'>Educación Emocional</option>
           </select>
         </div>
 
@@ -163,14 +197,24 @@ export default function WorksheetForm({
           </select>
         </div>
 
-        <div className='rounded-3xl border border-border bg-muted/50 p-4 transition-all duration-200 hover:border-primary/30 focus-within:border-primary/30'>
-          <label className='flex items-center gap-2 text-sm font-bold text-muted-foreground mb-2'>
-            <Globe className='w-4 h-4 text-primary' />
-            ¿En qué idioma la prefieres?
+        <div className={`rounded-3xl border border-border p-4 transition-all duration-200 ${isLanguageLocked ? 'bg-muted/30 border-muted-foreground/10' : 'bg-muted/50 hover:border-primary/30 focus-within:border-primary/30'}`}>
+          <label className='flex items-center justify-between text-sm font-bold text-muted-foreground mb-2'>
+            <span className='flex items-center gap-2'>
+              <Globe className='w-4 h-4 text-primary' />
+              ¿En qué idioma la prefieres?
+            </span>
+            {isLanguageLocked && (
+              <span className='text-[10px] bg-primary/10 text-primary px-2 py-0.5 rounded-full font-black uppercase tracking-wider animate-pulse'>
+                Fijado por asignatura
+              </span>
+            )}
           </label>
           <select
             name='language'
-            className='w-full px-3 py-2 border border-border rounded-xl bg-background text-foreground font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-colors'
+            value={language}
+            onChange={handleLanguageChange}
+            disabled={isLanguageLocked}
+            className='w-full px-3 py-2 border border-border rounded-xl bg-background text-foreground font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-colors disabled:opacity-75 disabled:cursor-not-allowed disabled:bg-muted/50'
             required
           >
             <option value='es'>Castellano</option>
