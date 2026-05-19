@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { FileText, CheckCircle, Lightbulb, BookOpen, GraduationCap, Target, BarChart, Globe, MapPin, Printer, PlusCircle, RefreshCw } from 'lucide-react'
 import { Worksheet, Exercise } from '@/lib/schemas'
 
@@ -76,6 +77,18 @@ export default function WorksheetView({
   isLoading,
   onReset
 }: Props) {
+  const [printMode, setPrintMode] = useState<'exercises' | 'solutions' | null>(null)
+
+  useEffect(() => {
+    if (printMode !== null) {
+      const timer = setTimeout(() => {
+        window.print()
+        setPrintMode(null)
+      }, 150)
+      return () => clearTimeout(timer)
+    }
+  }, [printMode])
+
   if (!worksheet || !worksheet.exercises) {
     return (
       <div className='bg-muted/50 border-2 border-dashed border-border p-8 rounded-lg text-center'>
@@ -135,7 +148,7 @@ export default function WorksheetView({
 
       <div className='relative z-10'>
         {/* Encabezado para impresión (Nombre, Fecha, etc.) */}
-        <div className='hidden print:block mb-8 border-b-2 border-slate-900 pb-6'>
+        <div className={`hidden ${printMode !== 'solutions' ? 'print:block' : ''} mb-8 border-b-2 border-slate-900 pb-6`}>
           <div className='flex justify-between items-end gap-8'>
             <div className='flex-1 border-b border-slate-400 pb-1'>
               <span className='text-[10px] font-black uppercase tracking-widest text-slate-500 block mb-1'>Nombre y apellidos</span>
@@ -210,7 +223,7 @@ export default function WorksheetView({
         </div>
 
         {/* Sección de Ejercicios */}
-        <div className='mb-16'>
+        <div className={`mb-16 ${printMode === 'solutions' ? 'print:hidden' : ''}`}>
           <div className='flex items-center gap-3 mb-8 pb-4 border-b-2 border-slate-100'>
             <BookOpen className='w-6 h-6 text-primary' />
             <h2 className='text-2xl font-black text-slate-900 font-heading print:text-xl'>Ejercicios de repaso</h2>
@@ -304,7 +317,11 @@ export default function WorksheetView({
         </div>
 
         {/* Sección de Soluciones */}
-        <div className='border-t-4 border-slate-100 pt-16 mt-8 print:break-before-page print:border-slate-200 print:pt-4 print:mt-4'>
+        <div className={`border-t-4 border-slate-100 pt-16 mt-8 print:border-slate-200 print:pt-4 print:mt-4 ${
+          printMode === 'exercises' ? 'print:hidden' : ''
+        } ${
+          printMode === 'solutions' ? '' : 'print:break-before-page'
+        }`}>
           <div className='flex items-center gap-3 mb-10 print:mb-4'>
             <div className='bg-green-100 p-2 rounded-xl print:bg-slate-100 print:p-1'>
               <CheckCircle className='w-8 h-8 text-green-600 print:w-6 print:h-6 print:text-slate-900' />
@@ -352,30 +369,36 @@ export default function WorksheetView({
             )}
           </div>
         </div>
-        <div className='hidden print:flex justify-between items-center mt-12 pt-4 border-t border-slate-200 text-[10px] font-black uppercase tracking-widest text-slate-400'>
-          <span>Generado por StudIA - Tu profesor particular con IA</span>
-          <span>¡Sigue aprendiendo, tú puedes! 🚀</span>
-        </div>
       </div>
 
       {/* Action Bar Flotante */}
-      <div className='fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 bg-white/90 backdrop-blur-lg border border-slate-200 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] no-print animate-in fade-in slide-in-from-bottom-8 duration-700'>
+      <div className='fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex items-center gap-2 p-2 bg-white/90 backdrop-blur-lg border border-slate-200 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] no-print animate-in fade-in slide-in-from-bottom-8 duration-700 max-w-[95vw] sm:max-w-none overflow-x-auto whitespace-nowrap'>
         <button
           onClick={onReset}
-          className='flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors rounded-xl hover:bg-slate-100'
+          className='flex items-center gap-2 px-3 sm:px-4 py-2.5 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors rounded-xl hover:bg-slate-100 cursor-pointer shrink-0'
         >
           <PlusCircle className='w-5 h-5 text-slate-500' />
-          Nueva ficha
+          <span>Nueva ficha</span>
         </button>
 
-        <div className='w-px h-8 bg-slate-200 mx-1' />
+        <div className='w-px h-8 bg-slate-200 mx-1 shrink-0' />
 
         <button
-          onClick={() => window.print()}
-          className='flex items-center gap-2 px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95'
+          onClick={() => setPrintMode('exercises')}
+          className='flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-bold hover:bg-slate-800 transition-all shadow-lg active:scale-95 cursor-pointer shrink-0'
         >
           <Printer className='w-5 h-5' />
-          Imprimir ficha
+          <span className='hidden sm:inline'>Imprimir ejercicios</span>
+          <span className='sm:hidden'>Ejercicios</span>
+        </button>
+
+        <button
+          onClick={() => setPrintMode('solutions')}
+          className='flex items-center gap-2 px-4 sm:px-5 py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-sm font-bold transition-all shadow-lg active:scale-95 cursor-pointer shrink-0'
+        >
+          <CheckCircle className='w-5 h-5' />
+          <span className='hidden sm:inline'>Imprimir soluciones</span>
+          <span className='sm:hidden'>Soluciones</span>
         </button>
       </div>
     </div>
