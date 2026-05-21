@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { FileText, CheckCircle, Lightbulb, BookOpen, GraduationCap, Target, BarChart, Globe, MapPin, Printer, PlusCircle, RefreshCw } from 'lucide-react'
+import { FileText, CheckCircle, Lightbulb, BookOpen, GraduationCap, Target, BarChart, Globe, MapPin, Printer, PlusCircle, Clock } from 'lucide-react'
 import { Worksheet, Exercise } from '@/lib/schemas'
 
 interface Props {
@@ -33,6 +33,14 @@ const genderLabels: Record<string, string> = {
   boy: 'Para niño',
   girl: 'Para niña',
   neutral: 'Inclusivo'
+}
+
+const worksheetStyleLabels: Record<string, string> = {
+  review: 'Repaso',
+  exam: 'Prueba',
+  game: 'Juego',
+  support: 'Refuerzo',
+  extension: 'Ampliación'
 }
 
 function renderFillBlank(sentence?: string) {
@@ -197,6 +205,18 @@ export default function WorksheetView({
                 <BarChart className='w-3.5 h-3.5 text-green-500' />
                 {difficultyLabels[worksheet.metadata.difficulty] || worksheet.metadata.difficulty}
               </div>
+              {worksheet.metadata.worksheetStyle && (
+                <div className='inline-flex items-center gap-1.5 rounded-full bg-cyan-50 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-cyan-700 border border-cyan-100/50 shadow-xs'>
+                  <Target className='w-3.5 h-3.5 text-cyan-500' />
+                  {worksheetStyleLabels[worksheet.metadata.worksheetStyle] || worksheet.metadata.worksheetStyle}
+                </div>
+              )}
+              {worksheet.metadata.duration && (
+                <div className='inline-flex items-center gap-1.5 rounded-full bg-indigo-50 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-indigo-700 border border-indigo-100/50 shadow-xs'>
+                  <Clock className='w-3.5 h-3.5 text-indigo-500' />
+                  {worksheet.metadata.duration} min
+                </div>
+              )}
               <div className='inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-[11px] font-black uppercase tracking-wider text-orange-700 border border-orange-100/50 shadow-xs'>
                 <Globe className='w-3.5 h-3.5 text-orange-500' />
                 {languageLabels[worksheet.metadata.language] || worksheet.metadata.language}

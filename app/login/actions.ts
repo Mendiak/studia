@@ -3,8 +3,16 @@
 import { cookies } from 'next/headers'
 
 export async function login(password: string): Promise<{ success: boolean; error?: string }> {
-  // If APP_PASSWORD is set in Vercel/env, we use it; otherwise fallback to 'studia123'
-  const correctPassword = process.env.APP_PASSWORD || 'studia123'
+  const correctPassword = process.env.APP_PASSWORD || (
+    process.env.NODE_ENV === 'production' ? undefined : 'studia123'
+  )
+
+  if (!correctPassword) {
+    return {
+      success: false,
+      error: 'Falta configurar la contraseña de acceso.'
+    }
+  }
 
   if (password === correctPassword) {
     const cookieStore = await cookies()

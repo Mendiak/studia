@@ -7,6 +7,8 @@ interface PromptParams {
   count: number
   region?: string
   gender?: 'boy' | 'girl' | 'neutral'
+  worksheetStyle?: 'review' | 'exam' | 'game' | 'support' | 'extension'
+  duration?: '10' | '20' | '30'
 }
 
 export function buildPrompt({
@@ -17,7 +19,9 @@ export function buildPrompt({
   grade,
   count,
   region,
-  gender = 'neutral'
+  gender = 'neutral',
+  worksheetStyle = 'review',
+  duration = '20'
 }: PromptParams) {
   const regionContext = region ? `en ${region}` : 'de primaria'
   const contextInstruction = region 
@@ -28,6 +32,13 @@ export function buildPrompt({
   const genderRule = gender === 'neutral' 
     ? 'Usa lenguaje inclusivo y neutro (evita "campeona" o "campeón", usa "¡Buen trabajo!", "¡Excelente!", etc.).'
     : `Dirígete al estudiante como ${gender === 'boy' ? 'niño/alumno' : 'niña/alumna'} (ej: "¡Eres un campeón!" o "¡Eres una campeona!").`
+  const styleInstructions = {
+    review: 'Ficha de repaso equilibrada: combina memoria, comprension y aplicacion.',
+    exam: 'Formato tipo prueba: enunciados claros, menos pistas y correccion facil.',
+    game: 'Formato ludico: plantea retos, misiones o pequenas situaciones de juego sin perder rigor.',
+    support: 'Refuerzo guiado: incluye mas andamiaje, pasos intermedios y lenguaje especialmente claro.',
+    extension: 'Ampliacion: sube un punto la profundidad conceptual con retos de razonamiento.'
+  }
 
   return `
 Eres un docente experto en educación primaria ${regionContext}, con amplia experiencia en pedagogías activas y aprendizaje significativo. Tu objetivo es diseñar una ficha de repaso de alta calidad pedagógica para ${studentTerm} de ${grade}.
@@ -40,6 +51,8 @@ DATOS DE LA FICHA:
 - Curso: ${grade}
 ${region ? `- Región/Contexto: ${region}` : ''}
 - Género del estudiante: ${gender}
+- Tipo de ficha: ${styleInstructions[worksheetStyle]}
+- Duración estimada: ${duration} minutos
 
 INSTRUCCIONES DIDÁCTICAS:
 1. PERSONA Y TONO: Habla como un maestro motivador. Usa un lenguaje cercano, positivo y que despierte la curiosidad. ${genderRule}

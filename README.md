@@ -38,10 +38,13 @@ Asegúrate de tener instalado Node.js en tu sistema.
    ```
 
 3. Configura las variables de entorno:
-   Crea un archivo `.env.local` en la raíz del proyecto y añade tu clave de API de Google Gemini:
+   Crea un archivo `.env.local` en la raíz del proyecto y añade tu clave de API de Google Gemini y una contraseña de acceso:
    ```env
-   GOOGLE_GENERATIVE_AI_API_KEY=tu_clave_aqui
+   GEMINI_API_KEY=tu_clave_aqui
+   APP_PASSWORD=tu_contraseña_aqui
    ```
+
+   También se admite `GOOGLE_GENERATIVE_AI_API_KEY` como nombre alternativo para la clave de Gemini.
 
 ### Ejecución en desarrollo
 

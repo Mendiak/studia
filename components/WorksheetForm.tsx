@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { FileText, BookOpen, Target, Globe, Hash, Send } from 'lucide-react'
+import { FileText, BookOpen, Target, Globe, Hash, Send, AlertCircle } from 'lucide-react'
 import { Worksheet } from '@/lib/schemas'
 
 interface Props {
@@ -17,6 +17,7 @@ export default function WorksheetForm({
   const [subject, setSubject] = useState('matemáticas')
   const [language, setLanguage] = useState('es')
   const [userLanguage, setUserLanguage] = useState('es')
+  const [error, setError] = useState('')
 
   const isLanguageLocked = ['inglés', 'castellano', 'catalán'].includes(subject)
 
@@ -45,6 +46,7 @@ export default function WorksheetForm({
     e: React.FormEvent<HTMLFormElement>
   ) {
     e.preventDefault()
+    setError('')
     setIsLoading(true)
     onLoading(true)
 
@@ -59,6 +61,8 @@ export default function WorksheetForm({
         grade: formData.get('grade'),
         region: formData.get('region'),
         gender: formData.get('gender'),
+        worksheetStyle: formData.get('worksheetStyle'),
+        duration: formData.get('duration'),
         count: Number(formData.get('count'))
       }
 
@@ -75,14 +79,14 @@ export default function WorksheetForm({
       const data = await res.json()
 
       if (!res.ok) {
-        alert(data.error || 'Error generating worksheet')
+        setError(data.error || 'No hemos podido crear la ficha. Intentalo de nuevo.')
         return
       }
 
       onGenerate(data)
     } catch (error) {
       console.error('Error generating worksheet:', error)
-      alert('Error generating worksheet')
+      setError('No hemos podido conectar con el generador. Revisa la conexion e intentalo de nuevo.')
     } finally {
       setIsLoading(false)
       onLoading(false)
@@ -197,6 +201,42 @@ export default function WorksheetForm({
           </select>
         </div>
 
+        <div className='rounded-3xl border border-border bg-muted/50 p-4 transition-all duration-200 hover:border-primary/30 focus-within:border-primary/30'>
+          <label className='flex items-center gap-2 text-sm font-bold text-muted-foreground mb-2'>
+            <Target className='w-4 h-4 text-primary' />
+            ¿Qué tipo de ficha quieres?
+          </label>
+          <select
+            name='worksheetStyle'
+            defaultValue='review'
+            className='w-full px-3 py-2 border border-border rounded-xl bg-background text-foreground font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-colors'
+            required
+          >
+            <option value='review'>Repaso equilibrado</option>
+            <option value='exam'>Tipo prueba</option>
+            <option value='game'>Retos con juego</option>
+            <option value='support'>Refuerzo guiado</option>
+            <option value='extension'>Ampliación</option>
+          </select>
+        </div>
+
+        <div className='rounded-3xl border border-border bg-muted/50 p-4 transition-all duration-200 hover:border-primary/30 focus-within:border-primary/30'>
+          <label className='flex items-center gap-2 text-sm font-bold text-muted-foreground mb-2'>
+            <Hash className='w-4 h-4 text-primary' />
+            ¿Cuánto tiempo tienes?
+          </label>
+          <select
+            name='duration'
+            defaultValue='20'
+            className='w-full px-3 py-2 border border-border rounded-xl bg-background text-foreground font-medium focus:ring-2 focus:ring-primary focus:border-primary transition-colors'
+            required
+          >
+            <option value='10'>10 minutos</option>
+            <option value='20'>20 minutos</option>
+            <option value='30'>30 minutos</option>
+          </select>
+        </div>
+
         <div className={`rounded-3xl border border-border p-4 transition-all duration-200 ${isLanguageLocked ? 'bg-muted/30 border-muted-foreground/10' : 'bg-muted/50 hover:border-primary/30 focus-within:border-primary/30'}`}>
           <label className='flex items-center justify-between text-sm font-bold text-muted-foreground mb-2'>
             <span className='flex items-center gap-2'>
@@ -250,6 +290,13 @@ export default function WorksheetForm({
             required
           />
         </div>
+
+        {error && (
+          <div className='md:col-span-2 flex items-start gap-3 rounded-2xl border border-red-100 bg-red-50 px-4 py-3 text-sm font-bold text-red-700'>
+            <AlertCircle className='mt-0.5 h-4 w-4 shrink-0' />
+            <span>{error}</span>
+          </div>
+        )}
 
         <button
           type='submit'

@@ -25,7 +25,7 @@ export default function LoginPage() {
       } else {
         setError(res.error || 'Contraseña incorrecta')
       }
-    } catch (err) {
+    } catch {
       setError('Algo ha salido mal. Inténtalo de nuevo.')
     } finally {
       setIsLoading(false)
